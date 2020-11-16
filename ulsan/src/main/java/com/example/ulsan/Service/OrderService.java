@@ -3,11 +3,14 @@ package com.example.ulsan.Service;
 import com.example.ulsan.Model.CrudInterface;
 import com.example.ulsan.Model.Entity.Orders;
 import com.example.ulsan.Model.Network.Header;
+import com.example.ulsan.Model.Network.Pagination;
 import com.example.ulsan.Model.Network.body.OrderBody;
 import com.example.ulsan.Repository.CompanyRepository;
 import com.example.ulsan.Repository.OrderRepository;
 import com.example.ulsan.Repository.WharfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -118,15 +121,21 @@ public class OrderService implements CrudInterface<OrderBody> {
         return Header.OK(orderBody);
     }
 
-    public Header<List<OrderBody>> readAll() {
-        List<Orders> ordersList =orderRepository.findAll();
+    public Header<List<OrderBody>> readAll(Pageable pageable) {
+        Page<Orders> ordersList =orderRepository.findAll(pageable);
         List<OrderBody> orderBodyList = new ArrayList<>();
         for(Orders orders : ordersList)
         {
             OrderBody orderBody = orderToBody(orders);
             orderBodyList.add(orderBody);
         }
-        return Header.OK(orderBodyList);
+        Pagination pagination= Pagination.builder()
+                .totalPages(ordersList.getTotalPages())
+                .totalElements(ordersList.getTotalElements())
+                .currentPage(ordersList.getNumber())
+                .currentElements(ordersList.getNumberOfElements())
+                .build();
+        return Header.OK(orderBodyList, pagination);
     }
 
     private OrderBody orderToBody(Orders orders) {

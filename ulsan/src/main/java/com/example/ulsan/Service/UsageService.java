@@ -3,11 +3,14 @@ package com.example.ulsan.Service;
 import com.example.ulsan.Model.CrudInterface;
 import com.example.ulsan.Model.Entity.Usages;
 import com.example.ulsan.Model.Network.Header;
+import com.example.ulsan.Model.Network.Pagination;
 import com.example.ulsan.Model.Network.body.UsageBody;
 import com.example.ulsan.Repository.CompanyRepository;
 import com.example.ulsan.Repository.UsageRepository;
 import com.example.ulsan.Repository.WharfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -85,14 +88,21 @@ public class UsageService implements CrudInterface<UsageBody> {
         return Header.OK(usageBody);
     }
 
-    public Header<List<UsageBody>> readAll() {
-        List<Usages> usagesList =usageRepository.findAll();
+    public Header<List<UsageBody>> readAll(Pageable pageable) {
+        Page<Usages> usagesList =usageRepository.findAll(pageable);
         List<UsageBody> usageBodyList = new ArrayList<>();
         for(Usages usages : usagesList)
         {
             UsageBody usageBody = usageToBody(usages);
             usageBodyList.add(usageBody);
         }
-        return Header.OK(usageBodyList);
+        Pagination pagination= Pagination.builder()
+                .totalPages(usagesList.getTotalPages())
+                .totalElements(usagesList.getTotalElements())
+                .currentPage(usagesList.getNumber())
+                .currentElements(usagesList.getNumberOfElements())
+                .build();
+
+        return Header.OK(usageBodyList, pagination);
     }
 }

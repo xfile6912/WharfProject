@@ -5,6 +5,9 @@ import com.example.ulsan.Model.Network.Header;
 import com.example.ulsan.Model.Network.body.UsageBody;
 import com.example.ulsan.Service.UsageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +32,8 @@ public class UsageController implements CrudInterface<UsageBody> {
     }
 
     @GetMapping("/")
-    public Header<List<UsageBody>> readAll() {
-        return usageService.readAll();
+    public Header<List<UsageBody>> readAll(@PageableDefault(sort="id", direction= Sort.Direction.DESC, size=15) Pageable pageable) {
+        return usageService.readAll(pageable);
     }
 
     @Override

@@ -5,6 +5,9 @@ import com.example.ulsan.Model.Network.Header;
 import com.example.ulsan.Model.Network.body.OrderBody;
 import com.example.ulsan.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +32,8 @@ public class OrderController implements CrudInterface<OrderBody> {
     }
 
     @GetMapping("/")
-    public Header<List<OrderBody>> readAll() {
-        return orderService.readAll();
+    public Header<List<OrderBody>> readAll(@PageableDefault(sort="id", direction= Sort.Direction.DESC, size=15) Pageable pageable) {
+        return orderService.readAll(pageable);
     }
 
     @Override
