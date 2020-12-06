@@ -70,6 +70,6 @@
 ------------
 ------------
 ## Screenshot(미완성)
-<img src="https://user-images.githubusercontent.com/57051773/101280915-48ae9d00-380f-11eb-8af5-e81d133a4bde.JPG" width="60%">
-<img src="https://user-images.githubusercontent.com/57051773/101280918-4ba98d80-380f-11eb-8e5a-1d39bc15fb0c.JPG" width="60%">
+<img src="https://user-images.githubusercontent.com/57051773/101280915-48ae9d00-380f-11eb-8af5-e81d133a4bde.JPG">
+<img src="https://user-images.githubusercontent.com/57051773/101280918-4ba98d80-380f-11eb-8e5a-1d39bc15fb0c.JPG">
 
